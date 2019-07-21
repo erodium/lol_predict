@@ -64,4 +64,12 @@ def getAllTournamentInfo():
 		result = writeTournyInfo(tnmt)
 		print ("{} result {}".format(tnmt, result))
 
-getAllTournamentInfo()
+#getAllTournamentInfo()
+
+def getMatchList(id):
+	with open("league"+str(id)+"_tournaments.json", "r") as readfile:
+		league_object = readfile.readlines()
+	return league_object
+
+lo = getMatchList(2)
+print(lo)
