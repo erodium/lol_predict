@@ -4,6 +4,31 @@ apiEndpoint = "https://api.lolesports.com/api/"
 
 LEAGUE_SLUGS = ["none", "all-star", "na-lcs", "eu-lcs", "na-cs", "eu-cs", "lck", "lpl-china", "lms", "worlds", "msi"]
 
+class Season():
+
+    def __init__(self, tournament):
+        self.title = tournament['title']
+        self.description = tournament['description']
+        self.id = tournament['id']
+        self.teams = tournament['rosters']
+        self.brackets = tournament['brackets']
+        self.games = tournament['gameIds']
+        self.leagueId = tournament['league']
+
+
+#    def __repr__(self):
+#        return ("Season({},{},{})".format(
+#            self.title, self.description, self.id))
+
+    def __str__(self):
+        return "title: {}\ndescription: {}\nid: {}".format(self.title, self.description, self.id)
+
+    def getMatches(self):
+        return(self.games)
+
+    def getID(self):
+        return(self.id)
+
 
 def getLeagueId(slug):
     if isinstance(slug, str) and slug in LEAGUE_SLUGS:
@@ -77,15 +102,15 @@ def getAllTournamentInfo():
 def getTournamentInfo(id):
     with open("league" + str(id) + "_tournaments.json", "r") as readfile:
         league_object = json.load(readfile)
-    print("gti {}".format(type(league_object)))
+    #print("gti {}".format(type(league_object)))
     #print(league_object.keys())
     return league_object
 
 
 def getSeasonInfo(tourny, id):
-    print("a {}".format(type(tourny)))
+    #print("a {}".format(type(tourny)))
     if isinstance(tourny, str):
-        print("here")
+        #print("here")
         tourny = json.load(tourny)
     # print("b {}".format(type(tourny[id])))
     if isinstance(id, int) and id >= 0 and id < len(tourny['highlanderTournaments']):
@@ -93,17 +118,21 @@ def getSeasonInfo(tourny, id):
     else:
         return("error in getSeasonInfo")
 
+
+def getMatchDetails(tournamentId, matchId):
+	r = requests.get(apiEndpoint+"v2/highlanderMatchDetails?tournamentId=" + str(tournamentId) + "&matchId=" + str(matchId)).json()
+	return r
+
+
 # uncomment the below line to write all files anew.
 # getAllTournamentInfo()
 tourn = getTournamentInfo(2)
 lo = getSeasonInfo(tourn, 0)
-class Season():
-    title = ""
 
-    def __init__(_self, title):
-        _self.title = title
-
-s = Season(lo['title'])
+s = Season(lo)
 
 # print("lo {}".format(type(lo)))
-pprint.pprint(s.title)
+print(s)
+matches = s.getMatches()
+print(s.getID())
+print(getMatchDetails(s.getID(), matches[0]))
