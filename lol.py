@@ -5,6 +5,7 @@ class Team:
         if "roster" in body.keys():
             self.id = body["roster"]
 
+
 class Match:
 
     def __init__(self, body="empty"):
@@ -15,7 +16,10 @@ class Match:
             self.teams.append(Team(team))
 
     def __str__(self):
-        return (str(self.body))
+        return str(self.body)
+
+    def getMatchId(self):
+        return self.id
 
 
 class Bracket:
@@ -27,6 +31,13 @@ class Bracket:
         self.name = body["name"]
         for id, match in body["matches"].items():
             self.matches.append(Match(match))
+
+    def getMatchList(self):
+        matchList = []
+        for match in self.matches:
+            matchList.append(match.id)
+        return (matchList)
+
 
 class Tournament:
 
@@ -43,9 +54,17 @@ class Tournament:
     def __str__(self):
         return self.title
 
+    def getMatchList(self):
+        tournamentMatchList = []
+        for bracket in self.brackets:
+            for matchId in bracket.getMatchList():
+                tournamentMatchList.append(matchId)
+        return ({self.id: tournamentMatchList})
+
+
 class League:
 
-    def __init__(self, body = "empty"):
+    def __init__(self, body="empty"):
         self.tournaments = []
         self.body = body
         self.id = body["leagues"][0]["id"]
@@ -60,13 +79,20 @@ class League:
         return "{}, {}:{}".format(self.slug, self.guid, self.id)
 
     def getTournaments(self):
-        return(self.tournaments)
+        return (self.tournaments)
 
     def listTournaments(self):
         tournamentList = []
         for tournament in self.tournaments:
             tournamentList.append(str(tournament))
-        return(tournamentList)
+        return (tournamentList)
+
+    def listAllMatches(self):
+        leagueMatchList = []
+        for tournament in self.tournaments:
+            leagueMatchList.append(tournament.getMatchList())
+        return (leagueMatchList)
+
 
 class Lol:
     leagues = []

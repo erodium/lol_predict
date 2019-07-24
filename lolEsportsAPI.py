@@ -127,6 +127,7 @@ def getAllSeasons(tourny):
         season.append(bracketDetails)
     return seasons
 
+
 def getMatchDetails(tournamentId, matchId):
     endpoint = apiEndpoint + "v2/highlanderMatchDetails?tournamentId=" + str(tournamentId) + "&matchId=" + str(matchId)
     print("getting {} match {} from {}".format(tournamentId, matchId, endpoint))
@@ -136,18 +137,18 @@ def getMatchDetails(tournamentId, matchId):
 
 # uncomment the below line to write all files anew.
 # getAllTournamentInfo()
-#for league in LEAGUE_SLUGS:
+# for league in LEAGUE_SLUGS:
 #    tourn = getTournamentInfo(league)
 #    lo = getSeasonInfo(tourn, 0)
 
-#s = Season(lo)
+# s = Season(lo)
 
 # print("lo {}".format(type(lo)))
-#print(s)
-#matches = s.getMatches()
-#print(s.getID())
-#print(getMatchDetails(s.getID(), matches[0]))
-
+# print(s)
+# matches = s.getMatches()
+# print(s.getID())
+# print(getMatchDetails(s.getID(), matches[0]))
+"""
 for league in LEAGUE_SLUGS:
     print(league)
     if league is None:
@@ -164,7 +165,7 @@ for league in LEAGUE_SLUGS:
                     index += 1
                 else: break
 
-"""
+
 
 
 tourn = getTournamentInfo("worlds")
@@ -179,3 +180,4 @@ for season in seasons:
             else:
                 matchDetails = getMatchDetails(season['id'], matchId)
                 print(matchDetails)
+"""
